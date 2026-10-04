@@ -1,10 +1,12 @@
-/* IronPulse Gym: interactions */
+/* Quesada Fitness Gym: interactions */
 (() => {
   'use strict';
 
   const $ = (selector, ctx = document) => ctx.querySelector(selector);
   const $$ = (selector, ctx = document) => Array.from(ctx.querySelectorAll(selector));
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  const GYM_EMAIL = 'quesadafitnessgymboxing@gmail.com';
 
   /* ---------- Mobile navigation ---------- */
   const header = $('.header');
@@ -95,157 +97,78 @@
     reveals.forEach((el) => el.classList.add('is-visible'));
   }
 
-  /* ---------- Class schedule ---------- */
-  const schedule = {
-    mon: [
-      { time: '06:00', name: 'Strength Training', coach: 'Marcus Reed', duration: 60, room: 'Main floor', level: 'All levels' },
-      { time: '07:30', name: 'Yoga & Mobility', coach: 'Sofia Lindqvist', duration: 45, room: 'Studio 1', level: 'Beginner' },
-      { time: '12:15', name: 'HIIT Inferno', coach: 'Elena Torres', duration: 45, room: 'Studio 2', level: 'Intermediate' },
-      { time: '18:00', name: 'Boxing', coach: 'Jay Okafor', duration: 60, room: 'Fight zone', level: 'All levels' },
-      { time: '19:30', name: 'CrossFit WOD', coach: 'Marcus Reed', duration: 50, room: 'Rig area', level: 'Advanced' },
-    ],
-    tue: [
-      { time: '06:30', name: 'HIIT Inferno', coach: 'Elena Torres', duration: 45, room: 'Studio 2', level: 'Intermediate' },
-      { time: '09:00', name: 'Yoga & Mobility', coach: 'Sofia Lindqvist', duration: 45, room: 'Studio 1', level: 'Beginner' },
-      { time: '17:30', name: 'Kickboxing', coach: 'Jay Okafor', duration: 60, room: 'Fight zone', level: 'Intermediate' },
-      { time: '19:00', name: 'Strength Training', coach: 'Marcus Reed', duration: 60, room: 'Main floor', level: 'All levels' },
-    ],
-    wed: [
-      { time: '06:00', name: 'CrossFit WOD', coach: 'Marcus Reed', duration: 50, room: 'Rig area', level: 'Advanced' },
-      { time: '07:30', name: 'Yoga & Mobility', coach: 'Sofia Lindqvist', duration: 45, room: 'Studio 1', level: 'Beginner' },
-      { time: '12:15', name: 'HIIT Inferno', coach: 'Elena Torres', duration: 45, room: 'Studio 2', level: 'Intermediate' },
-      { time: '18:00', name: 'Boxing', coach: 'Jay Okafor', duration: 60, room: 'Fight zone', level: 'All levels' },
-      { time: '19:30', name: 'Strength Training', coach: 'Marcus Reed', duration: 60, room: 'Main floor', level: 'All levels' },
-    ],
-    thu: [
-      { time: '06:30', name: 'HIIT Inferno', coach: 'Elena Torres', duration: 45, room: 'Studio 2', level: 'Intermediate' },
-      { time: '12:00', name: 'Strength Training', coach: 'Marcus Reed', duration: 60, room: 'Main floor', level: 'All levels' },
-      { time: '17:30', name: 'Kickboxing', coach: 'Jay Okafor', duration: 60, room: 'Fight zone', level: 'Intermediate' },
-      { time: '19:00', name: 'Yoga & Mobility', coach: 'Sofia Lindqvist', duration: 45, room: 'Studio 1', level: 'Beginner' },
-    ],
-    fri: [
-      { time: '06:00', name: 'Strength Training', coach: 'Marcus Reed', duration: 60, room: 'Main floor', level: 'All levels' },
-      { time: '12:15', name: 'HIIT Inferno', coach: 'Elena Torres', duration: 45, room: 'Studio 2', level: 'Intermediate' },
-      { time: '18:00', name: 'CrossFit WOD', coach: 'Marcus Reed', duration: 50, room: 'Rig area', level: 'Advanced' },
-      { time: '19:30', name: 'Boxing', coach: 'Jay Okafor', duration: 60, room: 'Fight zone', level: 'All levels' },
-    ],
-    sat: [
-      { time: '09:00', name: 'Saturday Sweat', coach: 'Elena Torres', duration: 60, room: 'Studio 2', level: 'All levels' },
-      { time: '10:30', name: 'Boxing Bootcamp', coach: 'Jay Okafor', duration: 75, room: 'Fight zone', level: 'Advanced' },
-      { time: '12:00', name: 'Yoga & Mobility', coach: 'Sofia Lindqvist', duration: 60, room: 'Studio 1', level: 'Beginner' },
-    ],
-    sun: [
-      { time: '10:00', name: 'Recovery Flow', coach: 'Sofia Lindqvist', duration: 60, room: 'Studio 1', level: 'Beginner' },
-      { time: '11:30', name: 'Open Gym Coaching', coach: 'Marcus Reed', duration: 90, room: 'Main floor', level: 'All levels' },
-    ],
+  /* ---------- Open / closed status (gym time: Europe/Madrid) ---------- */
+  // Minutes from midnight, per weekday (0 = Sunday)
+  const openingHours = {
+    0: [9 * 60, 13 * 60],
+    1: [7 * 60, 21 * 60 + 30],
+    2: [7 * 60, 21 * 60 + 30],
+    3: [7 * 60, 21 * 60 + 30],
+    4: [7 * 60, 21 * 60 + 30],
+    5: [7 * 60, 21 * 60 + 30],
+    6: [9 * 60, 13 * 60],
+  };
+  const dayLabels = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  const formatTime = (minutes) =>
+    `${String(Math.floor(minutes / 60)).padStart(2, '0')}:${String(minutes % 60).padStart(2, '0')}`;
+
+  const gymNow = () => {
+    const parts = new Intl.DateTimeFormat('en-GB', {
+      timeZone: 'Europe/Madrid',
+      weekday: 'short',
+      hour: '2-digit',
+      minute: '2-digit',
+      hourCycle: 'h23',
+    }).formatToParts(new Date());
+    const get = (type) => parts.find((p) => p.type === type).value;
+    return { day: dayLabels.indexOf(get('weekday')), minutes: Number(get('hour')) * 60 + Number(get('minute')) };
   };
 
-  const dayNames = { mon: 'Monday', tue: 'Tuesday', wed: 'Wednesday', thu: 'Thursday', fri: 'Friday', sat: 'Saturday', sun: 'Sunday' };
-  const tabs = $$('.tab');
-  const panel = $('#schedule-panel');
-  const classList = $('#class-list');
+  const updateOpenStatus = () => {
+    const status = $('#open-status');
+    const statusText = $('#open-status-text');
+    if (!status || !statusText) return;
 
-  const renderDay = (day) => {
-    classList.innerHTML = schedule[day]
-      .map((item, index) => {
-        const levelClass = item.level === 'Advanced' ? ' class-item__level--advanced' : '';
-        return `
-          <li class="class-item" style="animation-delay: ${index * 60}ms">
-            <span class="class-item__time">${item.time}</span>
-            <div class="class-item__info">
-              <h3 class="class-item__name">${item.name}</h3>
-              <p class="class-item__meta">${item.coach} · ${item.duration} min · ${item.room}</p>
-            </div>
-            <span class="class-item__level${levelClass}">${item.level}</span>
-            <a href="#contact" class="btn btn--ghost btn--sm class-item__btn"
-               data-book="${item.name}" data-day="${dayNames[day]}" data-time="${item.time}"
-               aria-label="Book ${item.name} on ${dayNames[day]} at ${item.time}">Book spot</a>
-          </li>`;
-      })
-      .join('');
-  };
+    let now;
+    try {
+      now = gymNow();
+    } catch {
+      return; // Leave the static "Opening hours" label
+    }
+    if (now.day < 0) return;
 
-  const selectTab = (tab, focus = false) => {
-    tabs.forEach((t) => {
-      const selected = t === tab;
-      t.setAttribute('aria-selected', String(selected));
-      t.tabIndex = selected ? 0 : -1;
-    });
-    panel.setAttribute('aria-labelledby', tab.id);
-    renderDay(tab.dataset.day);
-    if (focus) tab.focus();
-    tab.scrollIntoView({ block: 'nearest', inline: 'nearest' });
-  };
+    const [opens, closes] = openingHours[now.day];
+    const isOpen = now.minutes >= opens && now.minutes < closes;
+    let text;
 
-  tabs.forEach((tab, index) => {
-    tab.addEventListener('click', () => selectTab(tab));
-    tab.addEventListener('keydown', (event) => {
-      let next = null;
-      if (event.key === 'ArrowRight') next = tabs[(index + 1) % tabs.length];
-      if (event.key === 'ArrowLeft') next = tabs[(index - 1 + tabs.length) % tabs.length];
-      if (event.key === 'Home') next = tabs[0];
-      if (event.key === 'End') next = tabs[tabs.length - 1];
-      if (next) {
-        event.preventDefault();
-        selectTab(next, true);
-      }
-    });
-  });
+    if (isOpen) {
+      text = `Open now · until ${formatTime(closes)}`;
+    } else if (now.minutes < opens) {
+      text = `Closed · opens ${formatTime(opens)}`;
+    } else {
+      const nextDay = (now.day + 1) % 7;
+      text = `Closed · opens ${dayLabels[nextDay]} ${formatTime(openingHours[nextDay][0])}`;
+    }
 
-  // Open today's schedule by default (getDay: 0 = Sunday)
-  const todayKey = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'][new Date().getDay()];
-  const todayTab = tabs.find((t) => t.dataset.day === todayKey) || tabs[0];
-  tabs.forEach((t) => {
-    t.setAttribute('aria-selected', String(t === todayTab));
-    t.tabIndex = t === todayTab ? 0 : -1;
-  });
-  panel.setAttribute('aria-labelledby', todayTab.id);
-  renderDay(todayTab.dataset.day);
-
-  /* ---------- Pricing toggle ---------- */
-  const billingSwitch = $('#billing-switch');
-  const billingLabels = $$('.billing__label');
-
-  const setBilling = (yearly) => {
-    billingSwitch.setAttribute('aria-checked', String(yearly));
-    billingLabels.forEach((label) => {
-      label.classList.toggle('is-active', (label.dataset.billing === 'yearly') === yearly);
-    });
-    $$('.plan__amount').forEach((el) => {
-      el.textContent = yearly ? el.dataset.yearly : el.dataset.monthly;
-    });
-    $$('.plan__period').forEach((el) => {
-      el.textContent = yearly ? '/mo, billed yearly' : '/month';
+    status.classList.toggle('is-open', isOpen);
+    statusText.textContent = text;
+    $$('.hours-card__list li').forEach((row) => {
+      row.classList.toggle('is-today', row.dataset.days.split(',').map(Number).includes(now.day));
     });
   };
 
-  billingSwitch.addEventListener('click', () => {
-    setBilling(billingSwitch.getAttribute('aria-checked') !== 'true');
-  });
+  updateOpenStatus();
+  setInterval(updateOpenStatus, 60 * 1000);
 
-  billingLabels.forEach((label) => {
-    label.addEventListener('click', () => setBilling(label.dataset.billing === 'yearly'));
-  });
-
-  /* ---------- Prefill contact form from plan & class buttons ---------- */
+  /* ---------- Prefill contact form from price buttons ---------- */
   const contactForm = $('#contact-form');
-  const planSelect = $('#plan');
-  const messageField = $('#message');
+  const interestSelect = $('#interest');
 
   document.addEventListener('click', (event) => {
-    const planButton = event.target.closest('[data-plan]');
-    if (planButton) {
-      planSelect.value = planButton.dataset.plan;
-      validateField(planSelect);
-    }
-
-    const bookButton = event.target.closest('[data-book]');
-    if (bookButton) {
-      const { book, day, time } = bookButton.dataset;
-      if (!planSelect.value) planSelect.value = 'trial';
-      messageField.value = `I'd like to book ${book} on ${day} at ${time}.`;
-      validateField(planSelect);
-    }
+    const button = event.target.closest('[data-interest]');
+    if (!button) return;
+    interestSelect.value = button.dataset.interest;
+    validateField(interestSelect);
   });
 
   /* ---------- BMI calculator ---------- */
@@ -258,10 +181,10 @@
   const bmiResult = $('.bmi__result');
 
   const bmiRanges = [
-    { max: 18.5, label: 'Underweight', tip: 'Our strength programs and nutrition coaching can help you build healthy mass.' },
-    { max: 25, label: 'Healthy weight', tip: 'Great starting point! Let\'s build strength and keep you performing at your best.' },
-    { max: 30, label: 'Overweight', tip: 'HIIT and strength training are a powerful combo to help you reach your goal.' },
-    { max: Infinity, label: 'Obese', tip: 'Our coaches will build a safe, step-by-step plan tailored to you.' },
+    { max: 18.5, label: 'Underweight' },
+    { max: 25, label: 'Healthy weight' },
+    { max: 30, label: 'Overweight' },
+    { max: Infinity, label: 'Obese' },
   ];
 
   bmiForm.addEventListener('submit', (event) => {
@@ -288,17 +211,17 @@
     const position = Math.min(Math.max((bmi - 15) / (40 - 15), 0), 1) * 100;
 
     bmiValue.textContent = bmi.toFixed(1);
-    bmiCategory.innerHTML = `<strong>${range.label}.</strong> ${range.tip}`;
+    bmiCategory.innerHTML = `<strong>${range.label}.</strong> Book a gym induction or a personal training session to plan your next steps.`;
     bmiMarker.style.left = `${position}%`;
     bmiResult.classList.add('has-value');
   });
 
-  /* ---------- Contact form validation ---------- */
+  /* ---------- Contact form: validate, then open an email to the gym ---------- */
   const validators = {
     name: (v) => v.trim().length >= 2 || 'Please enter your full name.',
     email: (v) => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim()) || 'Please enter a valid email address.',
     phone: (v) => !v.trim() || /^\+?[\d\s().-]{7,20}$/.test(v.trim()) || 'Please enter a valid phone number.',
-    plan: (v) => Boolean(v) || 'Please choose an option.',
+    interest: (v) => Boolean(v) || 'Please choose an option.',
   };
 
   function validateField(input) {
@@ -331,8 +254,6 @@
   });
 
   const formStatus = $('#form-status');
-  const submitButton = $('[type="submit"]', contactForm);
-  const submitLabel = submitButton.innerHTML;
 
   contactForm.addEventListener('submit', (event) => {
     event.preventDefault();
@@ -345,18 +266,23 @@
       return;
     }
 
-    const firstName = $('#name').value.trim().split(/\s+/)[0];
-    submitButton.disabled = true;
-    submitButton.textContent = 'Sending…';
+    const name = $('#name').value.trim();
+    const email = $('#email').value.trim();
+    const phone = $('#phone').value.trim();
+    const interest = interestSelect.options[interestSelect.selectedIndex].text;
+    const message = $('#message').value.trim();
 
-    // No backend yet: simulate the request. Replace with a real fetch() to your API or form service.
-    setTimeout(() => {
-      contactForm.reset();
-      submitButton.disabled = false;
-      submitButton.innerHTML = submitLabel;
-      formStatus.textContent = `Thanks, ${firstName}! A coach will contact you within 24 hours to set up your free week.`;
-      formStatus.hidden = false;
-    }, 900);
+    const subject = `Website enquiry: ${interest}`;
+    const lines = [`Name: ${name}`, `Email: ${email}`];
+    if (phone) lines.push(`Phone: ${phone}`);
+    lines.push(`Interested in: ${interest}`);
+    if (message) lines.push('', message);
+    const body = lines.join('\n');
+
+    window.location.href = `mailto:${GYM_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
+    formStatus.textContent = `Your email app should now open with the message ready to send. If it doesn't, write to us at ${GYM_EMAIL}.`;
+    formStatus.hidden = false;
   });
 
   /* ---------- Footer year ---------- */

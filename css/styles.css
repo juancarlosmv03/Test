@@ -1,5 +1,5 @@
 /* ==========================================================================
-   IronPulse Gym: mobile-first stylesheet
+   Quesada Fitness Gym: mobile-first stylesheet
    Base styles target small screens; media queries (min-width) enhance
    the layout for larger viewports: 480px, 640px, 960px and 1200px.
    ========================================================================== */
@@ -588,7 +588,7 @@ ul {
   line-height: 1.3;
 }
 
-/* Hero visual card */
+/* Hero visual: opening hours card */
 .hero__visual {
   position: relative;
   width: 100%;
@@ -597,7 +597,7 @@ ul {
   padding: 30px 0;
 }
 
-.hero-card {
+.hours-card {
   position: relative;
   padding: 24px;
   border: 1px solid var(--c-border);
@@ -606,127 +606,95 @@ ul {
   box-shadow: 0 40px 80px -30px rgba(225, 29, 42, 0.45), var(--shadow-card);
 }
 
-.hero-card__head {
+.hours-card__head {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 12px;
   margin-bottom: 18px;
 }
 
-.live {
+.status {
   display: inline-flex;
   align-items: center;
   gap: 8px;
   padding: 4px 12px;
+  border: 1px solid var(--c-border);
   border-radius: var(--radius-pill);
-  background: var(--c-red);
-  color: #fff;
+  background: var(--c-surface-2);
+  color: var(--c-muted);
   font-size: 0.75rem;
   font-weight: 700;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
 }
 
-.live__dot {
+.status__dot {
   width: 8px;
   height: 8px;
   border-radius: 50%;
+  background: var(--c-dim);
+}
+
+.status.is-open {
+  border-color: var(--c-red);
+  background: var(--c-red);
+  color: #fff;
+}
+
+.status.is-open .status__dot {
   background: #fff;
   animation: blink 1.4s ease-in-out infinite;
 }
 
-.hero-card__title {
+.hours-card__title {
   font-family: var(--font-display);
   font-size: 2.4rem;
   line-height: 1;
 }
 
-.hero-card__meta {
-  margin-top: 4px;
+.hours-card__list {
+  display: grid;
+  gap: 8px;
+  margin: 18px 0;
+}
+
+.hours-card__list li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 14px;
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius-sm);
+  background: #0d0d0d;
   color: var(--c-muted);
   font-size: 0.9rem;
 }
 
-.pulse-line {
-  width: 100%;
-  height: 70px;
-  margin: 18px 0;
+.hours-card__list strong {
+  color: #fff;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
 }
 
-.pulse-line polyline {
-  fill: none;
-  stroke: var(--c-red);
-  stroke-width: 3;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  stroke-dasharray: 520;
-  stroke-dashoffset: 520;
-  filter: drop-shadow(0 0 6px rgba(225, 29, 42, 0.7));
-  animation: draw 3s var(--ease) infinite;
-}
-
-.hero-card__metrics {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-}
-
-.metric {
-  padding: 14px;
-  border-radius: var(--radius);
-  background: #0d0d0d;
-  border: 1px solid var(--c-border);
-}
-
-.metric__label {
-  display: block;
-  color: var(--c-muted);
-  font-size: 0.75rem;
-}
-
-.metric__value {
-  font-family: var(--font-display);
-  font-size: 2rem;
-  line-height: 1.1;
-}
-
-.metric__value small {
-  margin-left: 4px;
-  color: var(--c-red-text);
-  font-family: var(--font-body);
-  font-size: 0.75rem;
-  font-weight: 700;
-}
-
-.goal {
-  margin-top: 16px;
-}
-
-.goal__row {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 8px;
-  color: var(--c-muted);
-  font-size: 0.85rem;
-}
-
-.goal__row strong {
+.hours-card__list li.is-today {
+  border-color: var(--c-red-line);
+  background: var(--c-red-soft);
   color: #fff;
 }
 
-.goal__bar {
-  height: 10px;
-  border-radius: var(--radius-pill);
-  background: #0d0d0d;
-  border: 1px solid var(--c-border);
-  overflow: hidden;
+.hours-card__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--c-red-text);
+  font-weight: 700;
+  text-decoration: none;
 }
 
-.goal__bar span {
-  display: block;
-  height: 100%;
-  border-radius: inherit;
-  background: linear-gradient(90deg, var(--c-red-dark), var(--c-red));
+.hours-card__link:hover {
+  color: #fff;
 }
 
 .hero-float {
@@ -836,8 +804,7 @@ ul {
 }
 
 .program:hover,
-.feature:hover,
-.trainer:hover {
+.feature:hover {
   transform: translateY(-6px);
   border-color: var(--c-red-line);
   box-shadow: 0 24px 50px -24px rgba(225, 29, 42, 0.45);
@@ -891,171 +858,43 @@ ul {
   font-size: 1.6rem;
 }
 
-/* ---------- Schedule ---------- */
-.tabs {
-  display: flex;
-  gap: 4px;
-  margin-bottom: 24px;
-  padding: 6px;
-  overflow-x: auto;
-  border: 1px solid var(--c-border);
-  border-radius: var(--radius-pill);
-  background: var(--c-surface);
-  scrollbar-width: none;
-}
 
-.tabs::-webkit-scrollbar {
-  display: none;
-}
-
-.tab {
-  flex: 1 0 auto;
-  min-width: 34px;
-  min-height: 44px;
-  padding: 8px 4px;
-  font-size: 0.85rem;
-  border: 0;
-  border-radius: var(--radius-pill);
-  background: transparent;
-  color: var(--c-muted);
-  font-weight: 700;
-  transition: background-color 0.2s, color 0.2s;
-}
-
-.tab:hover {
-  color: #fff;
-}
-
-.tab[aria-selected="true"] {
-  background: var(--c-red);
-  color: #fff;
-  box-shadow: var(--shadow-red);
-}
-
-.class-list {
+/* ---------- Classes ---------- */
+.classes {
   display: grid;
-  gap: 12px;
+  gap: 16px;
 }
 
-.class-item {
-  display: grid;
-  grid-template-columns: auto 1fr;
-  align-items: center;
-  gap: 14px 16px;
-  padding: 16px;
-  border: 1px solid var(--c-border);
-  border-radius: var(--radius);
-  background: var(--c-surface);
-  animation: fade-up 0.4s var(--ease) both;
-  transition: border-color 0.25s;
-}
-
-.class-item:hover {
-  border-color: var(--c-red-line);
-}
-
-.class-item__time {
-  display: grid;
-  place-items: center;
-  min-width: 78px;
-  padding: 10px 12px;
-  border-radius: var(--radius-sm);
-  background: var(--c-red-soft);
-  color: var(--c-red-text);
-  font-family: var(--font-display);
-  font-size: 1.6rem;
-  line-height: 1;
-}
-
-.class-item__name {
-  font-size: 1.5rem;
-}
-
-.class-item__meta {
-  margin-top: 4px;
-  color: var(--c-muted);
-  font-size: 0.85rem;
-}
-
-.class-item__level {
-  justify-self: start;
-  padding: 4px 12px;
-  border-radius: var(--radius-pill);
-  border: 1px solid var(--c-border);
-  color: var(--c-muted);
-  font-size: 0.75rem;
-  font-weight: 700;
-}
-
-.class-item__level--advanced {
-  border-color: var(--c-red-line);
-  color: var(--c-red-text);
-}
-
-.class-item__btn {
-  justify-self: end;
-}
-
-/* ---------- Trainers ---------- */
-.trainer {
+.class-card {
   display: flex;
   flex-direction: column;
-  padding: 12px;
-  overflow: hidden;
 }
 
-.trainer__photo {
-  position: relative;
-  display: grid;
-  place-items: center;
-  aspect-ratio: 16 / 10;
-  overflow: hidden;
-  border-radius: var(--radius);
-  background:
-    radial-gradient(circle at 25% 15%, rgba(225, 29, 42, 0.6), transparent 55%),
-    linear-gradient(160deg, #262626, #0c0c0c);
-  color: rgba(255, 255, 255, 0.92);
-  font-family: var(--font-display);
-  font-size: 5.5rem;
-  line-height: 1;
+.class-card--list .card__title {
+  margin-top: 0;
 }
 
-.trainer__photo::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background-image: repeating-linear-gradient(
-    -45deg,
-    rgba(255, 255, 255, 0.035) 0 2px,
-    transparent 2px 12px
-  );
-}
-
-.trainer__body {
+.class-chips {
   display: flex;
-  flex: 1;
-  flex-direction: column;
-  padding: 4px 12px 12px;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 18px 0 24px;
 }
 
-.trainer .socials {
+.class-chips li {
+  padding: 8px 14px;
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius-pill);
+  background: var(--c-surface-2);
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.class-card--list .btn {
   margin-top: auto;
-  padding-top: 16px;
 }
 
-.trainer .card__title {
-  font-size: 1.75rem;
-}
-
-.trainer__role {
-  margin-top: 4px;
-  color: var(--c-red-text);
-  font-size: 0.8rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
+/* ---------- Social links ---------- */
 .socials {
   display: flex;
   gap: 8px;
@@ -1079,232 +918,69 @@ ul {
   color: #fff;
 }
 
-/* ---------- Pricing ---------- */
-.billing {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  margin-bottom: 40px;
+/* ---------- Prices ---------- */
+.prices {
+  display: grid;
+  gap: 16px;
 }
 
-.billing__label {
-  padding: 8px 6px;
-  border: 0;
-  background: none;
-  color: var(--c-muted);
-  font-weight: 700;
-  transition: color 0.2s;
-}
-
-.billing__label.is-active {
-  color: #fff;
-}
-
-.save {
-  margin-left: 4px;
-  padding: 2px 8px;
-  border-radius: var(--radius-pill);
-  background: var(--c-red);
-  color: #fff;
-  font-size: 0.72rem;
-}
-
-.switch {
-  position: relative;
-  flex-shrink: 0;
-  width: 58px;
-  height: 32px;
-  border: 1px solid var(--c-border);
-  border-radius: var(--radius-pill);
-  background: var(--c-surface-2);
-  transition: background-color 0.25s, border-color 0.25s;
-}
-
-.switch::after {
-  content: "";
-  position: absolute;
-  top: 3px;
-  left: 3px;
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  background: #fff;
-  transition: transform 0.3s var(--ease);
-}
-
-.switch[aria-checked="true"] {
-  background: var(--c-red);
-  border-color: var(--c-red);
-}
-
-.switch[aria-checked="true"]::after {
-  transform: translateX(26px);
-}
-
-.grid--pricing {
-  gap: 28px;
-  align-items: stretch;
-}
-
-.plan {
+.price {
   display: flex;
   flex-direction: column;
-  padding: 32px 24px;
+  align-items: flex-start;
+  padding: 28px 24px;
 }
 
-.plan--featured {
-  border: 2px solid var(--c-red);
-  background: linear-gradient(180deg, rgba(225, 29, 42, 0.16) 0%, var(--c-surface) 45%);
-  box-shadow: 0 30px 60px -30px rgba(225, 29, 42, 0.6);
+.price__name {
+  font-size: 1.6rem;
 }
 
-.plan__badge {
-  position: absolute;
-  top: -15px;
-  left: 50%;
-  transform: translateX(-50%);
-  padding: 6px 16px;
-  border-radius: var(--radius-pill);
-  background: var(--c-red);
-  color: #fff;
-  font-size: 0.75rem;
-  font-weight: 800;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  white-space: nowrap;
-  box-shadow: var(--shadow-red);
-}
-
-.plan__name {
-  font-size: 2.25rem;
-}
-
-.plan__desc {
-  margin-top: 6px;
-  color: var(--c-muted);
-  font-size: 0.92rem;
-}
-
-.plan__price {
+.price__amount {
   display: flex;
-  align-items: baseline;
+  align-items: flex-start;
   gap: 4px;
-  margin: 24px 0;
-  padding-bottom: 24px;
-  border-bottom: 1px solid var(--c-border);
+  margin-top: 16px;
+  font-family: var(--font-display);
+  font-size: 4.5rem;
+  line-height: 0.9;
+  font-variant-numeric: tabular-nums;
 }
 
-.plan__currency {
-  align-self: flex-start;
-  margin-top: 8px;
+.price__currency {
+  margin-top: 6px;
+  font-family: var(--font-body);
   font-size: 1.5rem;
   font-weight: 700;
 }
 
-.plan__amount {
-  font-family: var(--font-display);
-  font-size: 4.5rem;
-  line-height: 0.9;
-}
-
-.plan__period {
+.price__unit {
+  margin: 6px 0 24px;
   color: var(--c-muted);
   font-size: 0.9rem;
 }
 
-.plan__features {
-  display: grid;
-  gap: 12px;
-  margin-bottom: 32px;
-}
-
-.plan__features li {
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-  font-size: 0.95rem;
-}
-
-.plan__features .icon {
-  margin-top: 3px;
-  color: var(--c-red-text);
-  stroke-width: 3;
-}
-
-.plan__features .is-off {
-  color: var(--c-dim);
-}
-
-.plan__features .is-off .icon {
-  color: var(--c-dim);
-}
-
-.plan .btn {
+.price .btn {
   margin-top: auto;
 }
 
-/* ---------- Testimonials ---------- */
-.testimonials {
-  display: grid;
-  grid-auto-flow: column;
-  grid-auto-columns: 86%;
-  gap: 16px;
-  padding-bottom: 16px;
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  scrollbar-width: thin;
-  scrollbar-color: var(--c-red) transparent;
-  border-radius: var(--radius-lg);
+.price--featured {
+  border: 2px solid var(--c-red);
+  background: linear-gradient(180deg, rgba(225, 29, 42, 0.16) 0%, var(--c-surface) 55%);
+  box-shadow: 0 30px 60px -30px rgba(225, 29, 42, 0.6);
 }
 
-.testimonial {
+.price-ask {
   display: flex;
-  flex-direction: column;
-  margin: 0;
-  scroll-snap-align: start;
-}
-
-.stars {
-  display: flex;
-  gap: 4px;
-  color: var(--c-red);
-}
-
-.testimonial__quote {
-  flex: 1;
-  margin: 18px 0 24px;
-  font-size: 1.05rem;
-  line-height: 1.6;
-}
-
-.testimonial__author {
-  display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  gap: 12px;
+  justify-content: space-between;
+  gap: 20px;
 }
 
-.testimonial__author strong,
-.testimonial__author small {
-  display: block;
-}
-
-.testimonial__author small {
+.price-ask__text {
+  margin-top: 6px;
   color: var(--c-muted);
-  font-size: 0.8rem;
-}
-
-.avatar {
-  display: grid;
-  place-items: center;
-  flex-shrink: 0;
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, var(--c-red), var(--c-red-dark));
-  color: #fff;
-  font-family: var(--font-display);
-  font-size: 1.3rem;
+  font-size: 0.95rem;
 }
 
 /* ---------- BMI calculator ---------- */
@@ -1482,7 +1158,7 @@ ul {
 
 .info-item {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 14px;
   padding: 12px;
   border: 1px solid var(--c-border);
@@ -1505,6 +1181,17 @@ ul {
 
 .info-item a:hover {
   color: var(--c-red-text);
+}
+
+.info-item__more {
+  display: block;
+  margin-top: 4px;
+  color: var(--c-red-text);
+  font-size: 0.85rem;
+}
+
+.socials--contact {
+  margin-top: 16px;
 }
 
 .hours {
@@ -1558,6 +1245,12 @@ ul {
 
 .form__title {
   font-size: 2rem;
+}
+
+.form__intro {
+  margin-top: -8px;
+  color: var(--c-muted);
+  font-size: 0.92rem;
 }
 
 .form__row {
@@ -1652,6 +1345,7 @@ select.input option {
 }
 
 .form__status {
+  overflow-wrap: anywhere;
   padding: 14px 16px;
   border: 1px solid var(--c-red-line);
   border-radius: var(--radius-sm);
@@ -1691,6 +1385,7 @@ select.input option {
 }
 
 .footer__col ul {
+  overflow-wrap: anywhere;
   display: grid;
   gap: 10px;
   color: var(--c-muted);
@@ -1768,16 +1463,6 @@ select.input option {
   }
 }
 
-@keyframes draw {
-  0% {
-    stroke-dashoffset: 520;
-  }
-  60%,
-  100% {
-    stroke-dashoffset: 0;
-  }
-}
-
 @keyframes blink {
   50% {
     opacity: 0.3;
@@ -1816,23 +1501,16 @@ select.input option {
     grid-template-columns: repeat(2, 1fr);
   }
 
-  .class-item {
-    grid-template-columns: auto 1fr auto;
-  }
-
-  .class-item__level {
-    grid-column: 3;
-    grid-row: 1;
-    justify-self: end;
-  }
-
-  .class-item__btn {
-    grid-column: 1 / -1;
-    justify-self: stretch;
-  }
-
   .form__row {
     grid-template-columns: 1fr 1fr;
+  }
+
+  .prices {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .price-ask {
+    grid-column: 1 / -1;
   }
 }
 
@@ -1858,45 +1536,22 @@ select.input option {
     gap: 20px;
   }
 
-  .grid--programs,
-  .grid--trainers {
+  .grid--cards,
+  .classes {
     grid-template-columns: repeat(2, 1fr);
+  }
+
+  .class-card--list {
+    grid-column: 1 / -1;
+  }
+
+  .class-card--list .btn {
+    align-self: flex-start;
+    width: auto;
   }
 
   .card {
     padding: 32px 28px;
-  }
-
-  .trainer {
-    padding: 12px;
-  }
-
-  .trainer__photo {
-    aspect-ratio: 4 / 3;
-  }
-
-  .tabs {
-    gap: 6px;
-  }
-
-  .tab {
-    padding: 8px 14px;
-    font-size: 0.95rem;
-  }
-
-  .class-item {
-    grid-template-columns: auto 1fr auto auto;
-    padding: 16px 20px;
-  }
-
-  .class-item__btn {
-    grid-column: 4;
-    grid-row: 1;
-    justify-self: end;
-  }
-
-  .testimonials {
-    grid-auto-columns: calc(50% - 8px);
   }
 
   .bmi {
@@ -2019,11 +1674,11 @@ select.input option {
     max-width: 460px;
   }
 
-  .grid--programs {
+  .grid--cards {
     grid-template-columns: repeat(3, 1fr);
   }
 
-  .grid--trainers {
+  .prices {
     grid-template-columns: repeat(4, 1fr);
   }
 
@@ -2031,23 +1686,6 @@ select.input option {
     grid-template-columns: 1fr 1.1fr;
     align-items: center;
     gap: 64px;
-  }
-
-  .grid--pricing {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 24px;
-    align-items: center;
-  }
-
-  .plan--featured {
-    padding-block: 48px;
-  }
-
-  .testimonials {
-    grid-auto-flow: row;
-    grid-template-columns: repeat(3, 1fr);
-    overflow: visible;
-    padding-bottom: 0;
   }
 
   .bmi {
@@ -2125,10 +1763,6 @@ select.input option {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
-  }
-
-  .pulse-line polyline {
-    stroke-dashoffset: 0;
   }
 
   .js .reveal {
