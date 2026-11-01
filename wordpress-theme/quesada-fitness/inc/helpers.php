@@ -28,14 +28,24 @@ function qf_icon( $name, $class = '' ) {
  * URL of a file in the media library uploads folder, e.g. "2023/09/QFG7.jpg".
  *
  * The theme points at the photos already uploaded to the gym's WordPress, so
- * nothing has to be uploaded again when the theme is activated.
+ * nothing has to be uploaded again when the theme is activated. When a file is
+ * missing from this site's uploads folder (for example on a fresh local or
+ * staging copy), it is loaded from the live site instead. Change or disable
+ * that with the "qf_media_fallback_url" filter (return '' to disable).
  *
  * @param string $path Path relative to wp-content/uploads.
  * @return string
  */
 function qf_upload_url( $path ) {
-	$dir = wp_get_upload_dir();
-	return trailingslashit( $dir['baseurl'] ) . ltrim( $path, '/' );
+	$path = ltrim( $path, '/' );
+	$dir  = wp_get_upload_dir();
+
+	if ( file_exists( trailingslashit( $dir['basedir'] ) . $path ) ) {
+		return trailingslashit( $dir['baseurl'] ) . $path;
+	}
+
+	$fallback = apply_filters( 'qf_media_fallback_url', 'https://quesadafitness.com/wp-content/uploads/' );
+	return trailingslashit( $fallback ? $fallback : $dir['baseurl'] ) . $path;
 }
 
 /**
