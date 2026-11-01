@@ -15,11 +15,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 	<div class="container">
 		<div class="footer__grid">
 			<div class="footer__brand">
-				<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="logo" rel="home">
-					<span class="logo__mark"><?php echo qf_icon( 'pulse' ); // phpcs:ignore WordPress.Security.EscapeOutput ?></span>
-					<span class="logo__text"><?php esc_html_e( 'Quesada', 'quesada-fitness' ); ?><span><?php esc_html_e( 'Fitness', 'quesada-fitness' ); ?></span></span>
+				<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="logo logo--footer" rel="home">
+					<img class="logo__img" src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/logo-light.png' ); ?>" width="900" height="137" alt="<?php echo esc_attr( get_bloginfo( 'name' ) ); ?>">
 				</a>
-				<p class="footer__tagline"><?php esc_html_e( 'More than just a gym', 'quesada-fitness' ); ?></p>
 				<?php get_template_part( 'template-parts/socials' ); ?>
 			</div>
 

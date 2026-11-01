@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'QF_VERSION', '1.0.1' );
+define( 'QF_VERSION', '1.0.2' );
 
 require get_template_directory() . '/inc/helpers.php';
 require get_template_directory() . '/inc/data.php';

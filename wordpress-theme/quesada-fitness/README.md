@@ -30,7 +30,7 @@ The Inicio, Clases, Equipo and Galería pages were built with WPBakery/Divi. The
 ## Editing content
 
 - **Customizer → Quesada Fitness**: phone, WhatsApp, email, address, map, booking link, Facebook, Instagram, opening hours, the three price lists and the weekly timetable (one line per row, `Name | Price` or `09:30 | Class`; end a class name with `*` for outside instructors).
-- **Site Identity**: upload a logo (a light version works best on the black header). Without one, a text logo is shown.
+- **Logo**: the header and footer show the gym's own logo, recoloured for the black background (`assets/images/logo-light.png`: white name, red tagline). To use a different one, upload it in **Appearance → Customize → Site Identity**; a light version works best on the black header.
 - **Posts**: news posts appear on the home page, the gallery and the posts page.
 - Fixed texts (facilities, class descriptions, team bios, photo lists) are in `inc/data.php`. Each list can be changed with a filter (`qf_team`, `qf_facilities`, `qf_class_types`, `qf_gallery_photos`, `qf_gallery_videos`).
 

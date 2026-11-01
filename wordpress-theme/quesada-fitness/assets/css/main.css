@@ -1425,7 +1425,7 @@ select.input option {
   }
 
   .nav__link {
-    padding: 8px 16px;
+    padding: 8px 12px;
     border-radius: var(--radius-pill);
     font-size: 0.9rem;
   }
@@ -1576,6 +1576,20 @@ select.input option {
   display: block;
   width: auto;
   max-height: 48px;
+}
+
+/* The gym's logo, recoloured for dark backgrounds (assets/images/logo-light.png). */
+.logo__img {
+  display: block;
+  width: auto;
+  height: 30px;
+}
+
+.logo--footer .logo__img {
+  height: 40px;
+  max-width: 100%;
+  object-fit: contain;
+  object-position: left center;
 }
 
 /* Menu links (WordPress menus and the fallback list) */
@@ -2825,6 +2839,10 @@ a.page-numbers:hover {
 }
 
 @media (min-width: 480px) {
+  .logo__img {
+    height: 34px;
+  }
+
   .video-grid--portrait {
     grid-template-columns: repeat(3, 1fr);
   }

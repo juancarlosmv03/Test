@@ -29,8 +29,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 			<div class="logo logo--custom"><?php the_custom_logo(); ?></div>
 		<?php else : ?>
 			<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="logo" rel="home">
-				<span class="logo__mark"><?php echo qf_icon( 'pulse' ); // phpcs:ignore WordPress.Security.EscapeOutput ?></span>
-				<span class="logo__text"><?php esc_html_e( 'Quesada', 'quesada-fitness' ); ?><span><?php esc_html_e( 'Fitness', 'quesada-fitness' ); ?></span></span>
+				<img class="logo__img" src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/logo-light.png' ); ?>" width="900" height="137" alt="<?php echo esc_attr( get_bloginfo( 'name' ) ); ?>">
 			</a>
 		<?php endif; ?>
 
