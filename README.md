@@ -1,5 +1,13 @@
 # Quesada Fitness Gym website
 
+## WordPress theme (current version)
+
+`wordpress-theme/quesada-fitness/` is a WordPress theme that replaces the Divi theme on quesadafitness.com, using the site's real pages, posts, menu, photos, prices and timetable (taken directly from quesadafitness.com). See [its README](wordpress-theme/quesada-fitness/README.md) for installation and editing. Build the installable zip with `wordpress-theme/build-zip.sh`.
+
+## Static prototype
+
+The files below (`index.html`, `css/`, `js/`) are the earlier static prototype. Its content came from search results before the site could be accessed directly, so some details (prices, classes, email) are out of date; the WordPress theme has the current data.
+
 A responsive, mobile-first website for Quesada Fitness Gym (Ciudad Quesada, Rojales, Alicante), built with plain HTML, CSS and JavaScript. No build step, no dependencies.
 
 ## Preview
